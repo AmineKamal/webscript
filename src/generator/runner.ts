@@ -1,18 +1,23 @@
 import { IRunnerOptions, IBrowserOptions } from '..';
 import * as fs from 'fs';
-import { IRunCommand, CommandType } from '../shared/commands.interfaces';
 import { COMMANDS } from './commands/commands';
-import { IMap } from '../shared/general.interfaces';
+import { Map } from '../utils/structures.utils';
 import { LoopManager } from './classes/managers/loop.manager';
 import { ObjectUtils } from '../utils/object.utils';
 import { BaseBrowser } from './classes/browsers/base.browser';
 import { Browser } from './classes/browsers/browser';
+import { IRunCommand, CommandType, VariableType } from '../utils/type.utils';
+import { ConditionManager } from './classes/managers/condition.manager';
+
+const CONDITIONS_COMMANDS = ['if', 'fi', 'elif', 'else'];
 
 export class Runner {
   public browser!: BaseBrowser<any, any>;
-  public variables: IMap<any> = {};
+  public variables: Map<[VariableType, any]> = {};
   public loopManager: LoopManager = new LoopManager();
+  public conditionManager: ConditionManager = new ConditionManager();
   public i: number = -1;
+  public skip = false;
   private commands: IRunCommand[] = [];
 
   public async init(opt?: IBrowserOptions) {
@@ -42,7 +47,7 @@ export class Runner {
   private async next() {
     if (this.i >= this.commands.length - 1) return;
     const command = this.command;
-    await COMMANDS[command.type](this, this.input(command));
+    if (!this._skip) await COMMANDS[command.type](this, this.input(command));
     await this.next();
   }
 
@@ -51,7 +56,11 @@ export class Runner {
   }
 
   private input(c: IRunCommand) {
-    return ObjectUtils._(c).assign((k, v) => (this.isVariable(v, k, c.type) ? this.variables[v] : v));
+    return ObjectUtils._(c.input).assign((k, v) => (this.isVariable(v, k, c.type) ? this.variables[v][1] : v));
+  }
+
+  private get _skip() {
+    return this.skip && !CONDITIONS_COMMANDS.includes(this.commands[this.i].type);
   }
 
   private isVariable(input: any, key: string, type: CommandType) {

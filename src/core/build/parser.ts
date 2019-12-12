@@ -1,7 +1,6 @@
 import { VALIDATORS } from '../validator/validators';
-import { ICommand } from '../../shared/commands.interfaces';
-import { isCommand, ArgumentType } from '../validator/validator.utils';
-import { IMap } from '../../shared/general.interfaces';
+import { Map } from '../../utils/structures.utils';
+import { ICommand, isCommand, ArgumentType, VariableType } from '../../utils/type.utils';
 
 export interface IRawCommand {
   type: string;
@@ -11,7 +10,7 @@ export interface IRawCommand {
 export class CompileParser {
   private variable?: string;
 
-  public parse(raw: IRawCommand, variables: IMap<any>): ICommand | undefined {
+  public parse(raw: IRawCommand, variables: Map<[VariableType, any]>): ICommand | undefined {
     this.variable = undefined;
 
     if (!isCommand(raw.type)) return undefined;
@@ -22,10 +21,12 @@ export class CompileParser {
     return { type: raw.type, args };
   }
 
-  private try(arg: string, type: ArgumentType, variables: IMap<any>): any {
+  private try(arg: string, type: ArgumentType, variables: Map<[VariableType, any]>): any {
     switch (type) {
       case 'STRING':
       case 'URL':
+      case 'BOOL_EX':
+      case 'NUM_EX':
         return arg;
 
       case 'NUMBER':
@@ -49,13 +50,15 @@ export class CompileParser {
     }
   }
 
-  private tryValue(arg: string) {
+  private tryValue(arg: string): [VariableType, any] {
     let v = this.try(arg, 'BOOLEAN', {});
-    if (typeof v === 'boolean') return v;
+    if (typeof v === 'boolean') return ['BOOLEAN', v];
 
     v = this.try(arg, 'NUMBER', {});
-    if (typeof v === 'number') return v;
+    if (typeof v === 'number') return ['NUMBER', v];
 
-    return arg;
+    if (arg.startsWith('"') && arg.startsWith('"')) return ['STRING', v];
+
+    return ['URL', arg];
   }
 }

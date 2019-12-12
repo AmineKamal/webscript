@@ -1,12 +1,12 @@
-import { ICommand } from '../../shared/commands.interfaces';
+import { ICommand, isCommand, ICommandValidator, ArgumentType, VariableType } from '../../utils/type.utils';
+import { Map } from '../../utils/structures.utils';
 import { VALIDATORS } from './validators';
-import { isCommand, ICommandValidator, ArgumentType } from './validator.utils';
-import { IMap } from '../../shared/general.interfaces';
+import { BooleanExpressionSolver, NumericalExpressionSolver } from '../../utils/expressions.utils';
 
 const URL_VALIDATOR = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
 export class CompilerValidator {
-  public validate(command: ICommand, variables: IMap<any>) {
+  public validate(command: ICommand, variables: Map<[VariableType, any]>) {
     return (
       this.validateCommand(command) &&
       this.validateLength(command, VALIDATORS[command.type]) &&
@@ -22,18 +22,18 @@ export class CompilerValidator {
     return command.args.length === validator.length;
   }
 
-  private validateArguments(command: ICommand, validator: ICommandValidator, variables: IMap<any>) {
+  private validateArguments(command: ICommand, validator: ICommandValidator, variables: Map<[VariableType, any]>) {
     return command.args.map((a, i) => this.validateArgument(a, validator[i], variables)).every(b => b);
   }
 
-  private validateArgument(arg: any, validator: ArgumentType, variables: IMap<any>) {
-    if (this._validateArgument(arg, validator)) return true;
+  private validateArgument(arg: any, validator: ArgumentType, variables: Map<[VariableType, any]>) {
+    if (this._validateArgument(arg, validator, variables)) return true;
     if (typeof arg !== 'string' || !variables[arg]) return false;
 
-    return this._validateArgument(variables[arg], validator);
+    return this._validateArgument(variables[arg][1], validator, variables);
   }
 
-  private _validateArgument(arg: any, validator: ArgumentType) {
+  private _validateArgument(arg: any, validator: ArgumentType, variables: Map<[VariableType, any]>) {
     switch (validator) {
       case 'STRING':
         return typeof arg === 'string' && arg.startsWith('"') && arg.endsWith('"');
@@ -52,6 +52,12 @@ export class CompilerValidator {
 
       case 'VALUE':
         return true;
+
+      case 'BOOL_EX':
+        return BooleanExpressionSolver.validate(arg, variables);
+
+      case 'NUM_EX':
+        return NumericalExpressionSolver.validate(arg, variables);
 
       default:
         return false;

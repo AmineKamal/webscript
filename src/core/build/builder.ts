@@ -1,11 +1,10 @@
-import { ICommand, IRunCommand } from '../../shared/commands.interfaces';
-import { IRawCommand, CompileParser } from './compile.parser';
-import { CompilerValidator } from '../validator/compiler.validator';
-import { isCommand } from '../validator/validator.utils';
-import { MAP } from './compile.map';
-import { IMap } from '../../shared/general.interfaces';
-import { LoopValidator } from '../validator/loop.validator';
-import { CompileExtractor } from './compile.extractor';
+import { IRawCommand, CompileParser } from './parser';
+import { CompilerValidator } from '../validator/main';
+import { MAP } from './map';
+import { Map } from '../../utils/structures.utils';
+import { LoopValidator } from '../validator/loop';
+import { CompileExtractor } from './extractor';
+import { IRunCommand, ICommand, isCommand, VariableType } from '../../utils/type.utils';
 
 export type CompilerBuilderError = [number, string];
 
@@ -20,7 +19,7 @@ export class CompileBuilder {
   private parser = new CompileParser();
   private validator = new CompilerValidator();
   private loopValidator = new LoopValidator();
-  private variables: IMap<any> = {};
+  private variables: Map<[VariableType, any]> = {};
 
   public build(input: string): ICompileBuilderOutput {
     this.reset(input);

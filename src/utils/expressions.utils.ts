@@ -8,7 +8,7 @@ const NON_OPERANDS = [' ', '\n', '\r', ''];
 class InfixToPostfix {
   private infix!: string;
   private postfix: string[] = [];
-  private stack: Stack<string> = new Stack('(');
+  private stack: Stack<string> = new Stack();
   private operators: string[];
 
   /**
@@ -20,7 +20,8 @@ class InfixToPostfix {
   }
 
   public convert(infix: string) {
-    this.stack.clear();
+    this.stack.reset('(');
+    this.postfix = [];
     this.infix = infix + ')';
     this.split().forEach(c => this.apply(c));
     return this.postfix;
@@ -39,7 +40,7 @@ class InfixToPostfix {
       if (del) {
         [char] = char.split(del);
         chars = [...chars, char, del];
-        char = '';
+        char = NON_OPERANDS.includes(c) ? '' : c;
       } else if (delimiters.includes(c)) {
         const next = c + this.infix.charAt(i + 1);
 
@@ -89,14 +90,15 @@ class ExpressionSolver<O extends string> {
   }
 
   public validate(ex: string, variables: Map<[VariableType, any]>, soft = true): boolean {
-    this.stack.clear();
+    this.stack.reset();
+    if ((ex.match(/\(/g) || []).length !== (ex.match(/\)/g) || []).length) return false;
     const postfix = this.inToPos.convert(ex);
     for (const e of postfix) if (!this.apply(e, variables, soft)) return false;
     return true;
   }
 
-  public solve(ex: string, variables: Map<[VariableType, any]>): O | undefined {
-    if (this.validate(ex, variables, false)) return this.stack.pop() as O;
+  public solve<V>(ex: string, variables: Map<[VariableType, any]>): V | undefined {
+    if (this.validate(ex, variables, false)) return this.stack.pop() as V;
     return undefined;
   }
 
@@ -160,5 +162,5 @@ const NUMERICAL_OPS: StrictMap<NumericalOp, OpEquation<number>> = {
   '-': (a, b) => [is.NUMBER(a) && is.NUMBER(b), a - b!],
 };
 
-const BooleanExpressionSolver = new ExpressionSolver(BOOLEAN_OPS);
-const NumericalExpressionSolver = new ExpressionSolver(NUMERICAL_OPS);
+export const BooleanExpressionSolver = new ExpressionSolver(BOOLEAN_OPS);
+export const NumericalExpressionSolver = new ExpressionSolver(NUMERICAL_OPS);

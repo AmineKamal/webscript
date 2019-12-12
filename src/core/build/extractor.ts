@@ -1,5 +1,5 @@
-import { isCommand, ArgumentType } from '../validator/validator.utils';
 import { VALIDATORS } from '../validator/validators';
+import { isCommand, ArgumentType } from '../../utils/type.utils';
 
 export class CompileExtractor {
   public static extract(type: string, params: string[]) {

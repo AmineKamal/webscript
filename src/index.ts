@@ -32,6 +32,11 @@ export class WebscriptCompiler {
 
     options.input = JSON.stringify(commands);
     options.from = 'input';
+    // console.log('Press any key to exit');
+
+    // process.stdin.setRawMode(true);
+    // process.stdin.resume();
+    // process.stdin.on('data', process.exit.bind(process, 0));
     await this.run(options);
   }
 

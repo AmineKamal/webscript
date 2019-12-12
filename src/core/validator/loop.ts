@@ -1,5 +1,5 @@
-import { Stack } from '../../shared/classes/stack';
-import { ICommand } from '../../shared/commands.interfaces';
+import { Stack } from '../../utils/structures.utils';
+import { ICommand } from '../../utils/type.utils';
 
 type LoopStart = 'do';
 type LoopEnd = 'od';

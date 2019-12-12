@@ -1,5 +1,5 @@
 import { Runner } from '../runner';
-import { ICommandRunnable } from '../../shared/commands.interfaces';
+import { ICommandRunnable } from '../../utils/type.utils';
 
 export interface IGotoCommand {
   url: string;

@@ -1,6 +1,5 @@
-import { StrictMap } from '../../shared/general.interfaces';
-import { ICommandValidator } from './validator.utils';
-import { CommandType } from '../../shared/commands.interfaces';
+import { StrictMap } from '../../utils/structures.utils';
+import { CommandType, ICommandValidator } from '../../utils/type.utils';
 
 export const VALIDATORS: StrictMap<CommandType, ICommandValidator> = {
   do: ['NUMBER'],
@@ -8,4 +7,8 @@ export const VALIDATORS: StrictMap<CommandType, ICommandValidator> = {
   let: ['VARIABLE', 'VALUE'],
   od: [],
   wait: ['NUMBER'],
+  if: ['BOOL_EX'],
+  elif: ['BOOL_EX'],
+  else: [],
+  fi: [],
 };

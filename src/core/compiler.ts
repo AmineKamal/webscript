@@ -1,7 +1,7 @@
-import { CompileBuilder } from './build/compile.builder';
+import { CompileBuilder } from './build/builder';
 import * as fs from 'fs';
 import { ICompilerOptions } from '..';
-import { IRunCommand } from '../shared/commands.interfaces';
+import { IRunCommand } from '../utils/type.utils';
 
 export class Compiler {
   private builder: CompileBuilder = new CompileBuilder();

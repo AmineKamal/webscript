@@ -35,12 +35,12 @@ export class Stack<V> {
     return this.data.pop();
   }
 
-  public peek(): V | undefined {
-    return this.data[this.data.length - 1];
+  public peek(degree: number = 0): V | undefined {
+    return this.data[this.data.length - (1 + degree)];
   }
 
-  public clear() {
-    this.data = [];
+  public reset(e?: V | V[]) {
+    this.data = e ? [...(Array.isArray(e) ? e : [e])] : [];
   }
 
   public get length() {
@@ -71,8 +71,8 @@ export class Queue<V> {
     return this.data[0];
   }
 
-  public clear() {
-    this.data = [];
+  public reset(e?: V | V[]) {
+    this.data = e ? [...(Array.isArray(e) ? e : [e])] : [];
   }
 
   public get length() {

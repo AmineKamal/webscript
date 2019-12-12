@@ -1,4 +1,4 @@
-import { Stack } from '../../../shared/classes/stack';
+import { Stack } from '../../../utils/structures.utils';
 
 export interface ILoop {
   command: number;
