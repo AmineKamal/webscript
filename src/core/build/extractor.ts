@@ -1,16 +1,16 @@
-import { VALIDATORS } from '../validator/validators';
-import { isCommand, ArgumentType } from '../../utils/type.utils';
+import { isCommand, ArgumentType, ICommandValidator } from '../../utils/type.utils';
+import { COMMAND_VALIDATORS } from '../../utils/commands.utils';
 
 export class CompileExtractor {
   public static extract(type: string, params: string[]) {
     if (!isCommand(type)) return undefined;
-    const expected = VALIDATORS[type];
+    const expected = COMMAND_VALIDATORS[type];
     const args = this._extract(expected, params);
 
     return args ? { type, args } : args;
   }
 
-  private static _extract(expected: ArgumentType[], args: string[]) {
+  private static _extract(expected: ICommandValidator, args: string[]) {
     const extracted: string[] = [];
 
     for (const type of expected) {

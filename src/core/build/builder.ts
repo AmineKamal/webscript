@@ -1,6 +1,6 @@
 import { IRawCommand, CompileParser } from './parser';
 import { CompilerValidator } from '../validator/main';
-import { MAP } from './map';
+import { COMMAND_KEYS } from '../../utils/commands.utils';
 import { Map } from '../../utils/structures.utils';
 import { LoopValidator } from '../validator/loop';
 import { CompileExtractor } from './extractor';
@@ -90,10 +90,10 @@ export class CompileBuilder {
 
   private _map(command: ICommand): IRunCommand | undefined {
     if (!isCommand(command.type)) return undefined;
-    if (MAP[command.type].length !== command.args.length) return undefined;
+    if (COMMAND_KEYS[command.type].length !== command.args.length) return undefined;
 
     const input: any = {};
-    MAP[command.type].forEach((k, i) => (input[k] = command.args[i]));
+    COMMAND_KEYS[command.type].forEach((k: any, i: number) => (input[k] = command.args[i]));
 
     return { type: command.type, input };
   }

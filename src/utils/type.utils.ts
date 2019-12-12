@@ -18,7 +18,7 @@ const COMMAND_TYPES = ['goto', 'let', 'wait', 'do', 'od', 'if', 'elif', 'else', 
 export type CommandType = typeof COMMAND_TYPES[number];
 export type VariableType = typeof VARIABLE_TYPES[number];
 export type ArgumentType = VariableType | 'VARIABLE' | 'VALUE' | 'BOOL_EX' | 'NUM_EX';
-export type ICommandValidator = ArgumentType[];
+export type ICommandValidator = readonly ArgumentType[];
 export type ICommandRunnable<I, O> = (runner: Runner, args: I) => Promise<O>;
 type TypeVerifier<T> = (e: string) => [boolean, T];
 type TypeChecker = (v: any) => boolean;

@@ -1,6 +1,6 @@
 import { IRunnerOptions, IBrowserOptions } from '..';
 import * as fs from 'fs';
-import { COMMANDS } from './commands/commands';
+import { COMMANDS } from './commands';
 import { Map } from '../utils/structures.utils';
 import { LoopManager } from './classes/managers/loop.manager';
 import { ObjectUtils } from '../utils/object.utils';

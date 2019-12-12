@@ -1,6 +1,6 @@
-import { VALIDATORS } from '../validator/validators';
 import { Map } from '../../utils/structures.utils';
 import { ICommand, isCommand, ArgumentType, VariableType } from '../../utils/type.utils';
+import { COMMAND_VALIDATORS } from '../../utils/commands.utils';
 
 export interface IRawCommand {
   type: string;
@@ -15,7 +15,7 @@ export class CompileParser {
 
     if (!isCommand(raw.type)) return undefined;
 
-    const args = VALIDATORS[raw.type].map((v, i) => this.try(raw.args[i], v, variables));
+    const args = COMMAND_VALIDATORS[raw.type].map((v, i) => this.try(raw.args[i], v, variables));
     if (args.some(a => a === undefined)) return undefined;
 
     return { type: raw.type, args };

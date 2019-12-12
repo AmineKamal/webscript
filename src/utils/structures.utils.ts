@@ -1,4 +1,5 @@
 // tslint:disable:max-classes-per-file
+// tslint:disable:interface-over-type-literal
 
 /**
  * TYPES
@@ -7,6 +8,7 @@
 export type StrictMap<K extends string, V> = { [key in K]: V };
 export type Map<V> = IMap<V>;
 export type Pair<V> = [V, V];
+export type Implements<T, _U extends T> = {};
 
 /**
  * INTERFACES

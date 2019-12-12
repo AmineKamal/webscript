@@ -1,7 +1,7 @@
 import { ICommand, isCommand, ICommandValidator, ArgumentType, VariableType } from '../../utils/type.utils';
 import { Map } from '../../utils/structures.utils';
-import { VALIDATORS } from './validators';
 import { BooleanExpressionSolver, NumericalExpressionSolver } from '../../utils/expressions.utils';
+import { COMMAND_VALIDATORS } from '../../utils/commands.utils';
 
 const URL_VALIDATOR = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
@@ -9,8 +9,8 @@ export class CompilerValidator {
   public validate(command: ICommand, variables: Map<[VariableType, any]>) {
     return (
       this.validateCommand(command) &&
-      this.validateLength(command, VALIDATORS[command.type]) &&
-      this.validateArguments(command, VALIDATORS[command.type], variables)
+      this.validateLength(command, COMMAND_VALIDATORS[command.type]) &&
+      this.validateArguments(command, COMMAND_VALIDATORS[command.type], variables)
     );
   }
 
