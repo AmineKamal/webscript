@@ -64,6 +64,16 @@ const WAIT: ICommandRunnable<IWaitCommand, void> = async (runner: Runner, input:
   await runner.browser.wait(input.time);
 };
 
+/* CLICK */
+type StrictClick = StrictMap<typeof COMMAND_KEYS.click[number], any>;
+interface ICLickCommand extends Implements<StrictClick, ICLickCommand> {
+  selector: string;
+}
+
+const CLICK: ICommandRunnable<ICLickCommand, void> = async (runner: Runner, input: ICLickCommand) => {
+  await runner.browser.click(input.selector);
+};
+
 /**
  * CONDITIONS MANAGEMENT
  */
@@ -114,4 +124,5 @@ export const COMMANDS: StrictMap<CommandType, ICommandRunnable<any, any>> = {
   elif: ELIF,
   else: ELSE,
   fi: FI,
+  click: CLICK,
 };

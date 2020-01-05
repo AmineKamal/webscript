@@ -1,4 +1,4 @@
-import { StrictMap, Implements } from './structures.utils';
+import { StrictMap } from './structures.utils';
 import { CommandType, ArgumentType } from './type.utils';
 
 class CommandKeys implements StrictMap<CommandType, readonly string[]> {
@@ -11,6 +11,7 @@ class CommandKeys implements StrictMap<CommandType, readonly string[]> {
   public elif = ['ex'] as const;
   public else = [] as const;
   public fi = [] as const;
+  public click = ['selector'] as const;
 }
 
 export const COMMAND_KEYS = new CommandKeys();
@@ -25,4 +26,5 @@ export const COMMAND_VALIDATORS: StrictMap<CommandType, readonly ArgumentType[]>
   elif: ['BOOL_EX'],
   else: [],
   fi: [],
+  click: ['STRING'],
 } as const;

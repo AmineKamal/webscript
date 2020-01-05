@@ -10,7 +10,7 @@ const URL_VALIDATOR = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z
  *  CONSTANTS
  */
 const VARIABLE_TYPES = ['URL', 'STRING', 'BOOLEAN', 'NUMBER'] as const;
-const COMMAND_TYPES = ['goto', 'let', 'wait', 'do', 'od', 'if', 'elif', 'else', 'fi'] as const;
+const COMMAND_TYPES = ['goto', 'let', 'wait', 'do', 'od', 'if', 'elif', 'else', 'fi', 'click'] as const;
 
 /**
  * TYPES

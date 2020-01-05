@@ -1,4 +1,4 @@
-import { isCommand, ArgumentType, ICommandValidator } from '../../utils/type.utils';
+import { isCommand, ICommandValidator } from '../../utils/type.utils';
 import { COMMAND_VALIDATORS } from '../../utils/commands.utils';
 
 export class CompileExtractor {
