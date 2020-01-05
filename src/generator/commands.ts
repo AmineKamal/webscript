@@ -126,3 +126,5 @@ export const COMMANDS: StrictMap<CommandType, ICommandRunnable<any, any>> = {
   fi: FI,
   click: CLICK,
 };
+
+// comment
